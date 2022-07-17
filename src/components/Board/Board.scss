@@ -1,0 +1,15 @@
+.Board {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  &__title {
+    text-align: center;
+    color: #90e0ef;
+  }
+
+  &__row {
+    display: flex;
+    gap: 2px;
+  }
+}
