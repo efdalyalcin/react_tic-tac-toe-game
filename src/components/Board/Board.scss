@@ -1,3 +1,5 @@
+@import "../../vars";
+
 .Board {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,7 @@
 
   &__title {
     text-align: center;
-    color: #90e0ef;
+    color: $c-lightBlue;
   }
 
   &__row {
@@ -16,8 +18,8 @@
   &__replay-button {
     margin-top: 40px;
     padding: 10px;
-    background-color: #0077b6 ;
-    color: #90e0ef;
+    background-color: $c-blue ;
+    color: $c-lightBlue;
     font-weight: 800;
     font-size: 18px;
   }

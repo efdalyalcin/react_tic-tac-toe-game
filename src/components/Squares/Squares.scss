@@ -1,9 +1,11 @@
+@import "../../vars";
+
 .Square {
   width: 100px;
   height: 100px;
-  border: 2px solid #0077b6;
+  border: 2px solid $c-blue;
   font-size: 40px;
   font-weight: bold;
-  background-color: #90e0ef;
-  color: #0077b6;
+  background-color: $c-lightBlue;
+  color: $c-blue;
 }
