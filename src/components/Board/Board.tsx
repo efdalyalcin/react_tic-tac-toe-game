@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
 import { calculateWinner, lookForWinningIndex } from '../helper';
@@ -8,6 +8,8 @@ export const Board: React.FC = () => {
     = useState<('X' | 'O' | null)[]>(Array(9).fill(null));
 
   const [isXNext, setIsXNext] = useState(true);
+  const [winner, setWinner] = useState<'X' | 'O' | null>(null);
+  const [isDraw, setIsDraw] = useState(false);
 
   const handleClick = (index: number) => {
     const squares = [...boardSquares];
@@ -30,19 +32,24 @@ export const Board: React.FC = () => {
   const handleReplay = () => {
     setBoardSquares(Array(9).fill(null));
     setIsXNext(true);
+    setWinner(null);
+    setIsDraw(false);
   };
 
-  const winner = calculateWinner(boardSquares);
+  useEffect(
+    () => {
+      const isThereWinner = calculateWinner(boardSquares);
 
-  const resultOfGame = (winPlayer: 'X' | 'O' | null) => {
-    if (winner) {
-      return (`Winner is ${winPlayer}`);
-    }
-     
-    if (!boardSquares.includes(null)) {
-      return ("It is a draw");
-    }
-  };
+      if (isThereWinner) {
+        setWinner(isThereWinner);
+      }
+
+      if (!boardSquares.includes(null)) {
+        setIsDraw(true);
+      }
+    },
+    [boardSquares],
+  );
 
   const putComputerAt = (index: number) => {
     const squares = [...boardSquares];
@@ -77,11 +84,13 @@ export const Board: React.FC = () => {
   return (
     <div className="Board">
       <h2 className="Board__title">
-        {winner
-          ? resultOfGame(winner)
-          : isXNext
-            ? 'Next player: X'
-            : 'Next player: O'
+        {isDraw 
+          ? 'It is a draw' 
+          : winner
+            ? `Winner is ${winner}`
+            : isXNext
+              ? 'Next player: X'
+              : 'Next player: O'
         }
       </h2>
 
