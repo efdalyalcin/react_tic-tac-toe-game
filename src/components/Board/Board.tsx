@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
-import { calculateWinner } from '../helper';
+import { calculateWinner, lookForWinningIndex } from '../helper';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
-    = useState<("X" | "O" | null)[]>(Array(9).fill(null));
+    = useState<('X' | 'O' | null)[]>(Array(9).fill(null));
 
   const [isXNext, setIsXNext] = useState(true);
 
@@ -50,22 +50,29 @@ export const Board: React.FC = () => {
     setBoardSquares([...squares]);
   };
 
-  if (!isXNext) {
+  const getFreeIndexes = () => {
     const freeIndixes = boardSquares.map((square, index: number) => square === null ? index : null);
     const freeIndexNums: number[] = freeIndixes.filter((index): index is number => {
       return index !== null;
     });
 
-    const randomIndex: number = freeIndexNums[Math.floor(Math.random() * freeIndexNums.length)];
+    return freeIndexNums;
+  };
 
-    putComputerAt(randomIndex);
-    setIsXNext(true);
+  if (!isXNext && !winner) {
+    const freeIndexNums = getFreeIndexes();
+    const winningPosition = lookForWinningIndex(boardSquares);
+
+    if (winningPosition !== null) {
+      putComputerAt(winningPosition);
+      setIsXNext(true);
+    } else {
+      const randomIndex: number = freeIndexNums[Math.floor(Math.random() * freeIndexNums.length)];
+  
+      putComputerAt(randomIndex);
+      setIsXNext(true);
+    }
   }
-
-  // make the AI smarter
-  // const currentWinningLines = winningLines.filter(
-  //   (line) => !line.some((i) => xIndices.includes(i))
-  // );
 
   return (
     <div className="Board">
