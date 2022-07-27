@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
-import { calculateWinner } from '../helper';
+import { calculateWinner, lookForWinningIndex } from '../helper';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
-    = useState<("X" | "O" | null)[]>(Array(9).fill(null));
+    = useState<('X' | 'O' | null)[]>(Array(9).fill(null));
 
   const [isXNext, setIsXNext] = useState(true);
 
@@ -27,13 +27,58 @@ export const Board: React.FC = () => {
     />
   );
 
+  const handleReplay = () => {
+    setBoardSquares(Array(9).fill(null));
+    setIsXNext(true);
+  };
+
   const winner = calculateWinner(boardSquares);
+
+  const resultOfGame = (winPlayer: 'X' | 'O' | null) => {
+    if (winner) {
+      return (`Winner is ${winPlayer}`);
+    }
+     
+    if (!boardSquares.includes(null)) {
+      return ("It is a draw");
+    }
+  };
+
+  const putComputerAt = (index: number) => {
+    const squares = [...boardSquares];
+    squares[index] = 'O';
+    setBoardSquares([...squares]);
+  };
+
+  const getFreeIndexes = () => {
+    const freeIndixes = boardSquares.map((square, index: number) => square === null ? index : null);
+    const freeIndexNums: number[] = freeIndixes.filter((index): index is number => {
+      return index !== null;
+    });
+
+    return freeIndexNums;
+  };
+
+  if (!isXNext && !winner) {
+    const freeIndexNums = getFreeIndexes();
+    const winningPosition = lookForWinningIndex(boardSquares);
+
+    if (winningPosition !== null) {
+      putComputerAt(winningPosition);
+      setIsXNext(true);
+    } else {
+      const randomIndex: number = freeIndexNums[Math.floor(Math.random() * freeIndexNums.length)];
+  
+      putComputerAt(randomIndex);
+      setIsXNext(true);
+    }
+  }
 
   return (
     <div className="Board">
       <h2 className="Board__title">
         {winner
-          ? `Winner is ${winner}`
+          ? resultOfGame(winner)
           : isXNext
             ? 'Next player: X'
             : 'Next player: O'
@@ -57,6 +102,14 @@ export const Board: React.FC = () => {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
+
+      <button 
+        type="button"
+        onClick={handleReplay}
+        className="Board__replay-button"
+      >
+        Play again
+      </button>
     </div>
   );
 };

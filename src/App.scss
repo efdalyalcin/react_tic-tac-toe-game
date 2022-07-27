@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+@import "vars";
 
 .App {
   width:100%;
@@ -9,5 +7,5 @@
   justify-content: center;
   align-items: center;
 
-  background-color: #03045e;
+  background-color: $c-darkBlue;
 }
