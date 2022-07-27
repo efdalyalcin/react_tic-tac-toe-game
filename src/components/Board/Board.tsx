@@ -62,16 +62,7 @@ export const Board: React.FC = () => {
     setIsXNext(true);
   }
 
-  // const xIndices = boardSquares.reduce((acc, square, i) => {
-  //   if (square === "X") {
-  //     acc.push(i);
-  //   }
-
-  //   return acc;
-  // }, []);
-
-  // const freeIndices = boardSquares.filter((square) => square === null);
-
+  // make the AI smarter
   // const currentWinningLines = winningLines.filter(
   //   (line) => !line.some((i) => xIndices.includes(i))
   // );
