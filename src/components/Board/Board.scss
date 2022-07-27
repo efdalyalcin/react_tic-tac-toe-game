@@ -12,4 +12,13 @@
     display: flex;
     gap: 2px;
   }
+
+  &__replay-button {
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #0077b6 ;
+    color: #90e0ef;
+    font-weight: 800;
+    font-size: 18px;
+  }
 }
