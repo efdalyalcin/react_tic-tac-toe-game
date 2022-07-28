@@ -38,48 +38,53 @@ export const Board: React.FC = () => {
 
   useEffect(
     () => {
-      const isThereWinner = calculateWinner(boardSquares);
-
-      if (isThereWinner) {
-        setWinner(isThereWinner);
-      }
-
-      if (!boardSquares.includes(null)) {
-        setIsDraw(true);
+      const putComputerAt = (index: number) => {
+        const squares = [...boardSquares];
+        squares[index] = 'O';
+        setBoardSquares([...squares]);
+      };
+    
+      const getFreeIndexes = () => {
+        const freeIndixes = boardSquares.map((square, index: number) => square === null ? index : null);
+        const freeIndexNums: number[] = freeIndixes.filter((index): index is number => {
+          return index !== null;
+        });
+    
+        return freeIndexNums;
+      };
+    
+      const checkWinner = () => {
+        const isThereWinner = calculateWinner(boardSquares);
+    
+        if (isThereWinner) {
+          setWinner(isThereWinner);
+          return isThereWinner;
+        }
+    
+        if (!boardSquares.includes(null)) {
+          setIsDraw(true);
+        }
+      };
+    
+      const isWinner = checkWinner();
+    
+      if (!isXNext && !isWinner) {
+        const freeIndexNums = getFreeIndexes();
+        const winningPosition = lookForWinningIndex(boardSquares);
+    
+        if (winningPosition !== null) {
+          putComputerAt(winningPosition);
+          setIsXNext(true);
+        } else {
+          const randomIndex: number = freeIndexNums[Math.floor(Math.random() * freeIndexNums.length)];
+      
+          putComputerAt(randomIndex);
+          setIsXNext(true);
+        }
       }
     },
-    [boardSquares],
+    [boardSquares, isXNext, winner],
   );
-
-  const putComputerAt = (index: number) => {
-    const squares = [...boardSquares];
-    squares[index] = 'O';
-    setBoardSquares([...squares]);
-  };
-
-  const getFreeIndexes = () => {
-    const freeIndixes = boardSquares.map((square, index: number) => square === null ? index : null);
-    const freeIndexNums: number[] = freeIndixes.filter((index): index is number => {
-      return index !== null;
-    });
-
-    return freeIndexNums;
-  };
-
-  if (!isXNext && !winner) {
-    const freeIndexNums = getFreeIndexes();
-    const winningPosition = lookForWinningIndex(boardSquares);
-
-    if (winningPosition !== null) {
-      putComputerAt(winningPosition);
-      setIsXNext(true);
-    } else {
-      const randomIndex: number = freeIndexNums[Math.floor(Math.random() * freeIndexNums.length)];
-  
-      putComputerAt(randomIndex);
-      setIsXNext(true);
-    }
-  }
 
   return (
     <div className="Board">
