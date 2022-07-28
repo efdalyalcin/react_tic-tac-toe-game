@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
 import { calculateWinner, lookForComputerWin, lookForWinningIndex } from '../helper';
+import { ScoreBoard } from '../ScoreBoard/ScoreBoard';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
@@ -92,6 +93,8 @@ export const Board: React.FC = () => {
 
   return (
     <div className="Board">
+      <ScoreBoard winner={winner} />
+
       <h2 className="Board__title">
         {isDraw 
           ? 'It is a draw' 
