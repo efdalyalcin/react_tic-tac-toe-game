@@ -7,7 +7,7 @@
 
   &__title {
     text-align: center;
-    color: $c-lightBlue;
+    color: $c-textColor;
   }
 
   &__row {
@@ -18,9 +18,10 @@
   &__replay-button {
     margin-top: 40px;
     padding: 10px;
-    background-color: $c-blue ;
-    color: $c-lightBlue;
+    background-color: $c-textColor ;
+    color: $c-mainColor;
     font-weight: 800;
     font-size: 18px;
+    border-color: $c-textColor;
   }
 }
