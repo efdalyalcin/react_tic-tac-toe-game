@@ -27,17 +27,34 @@ export const lookForWinningIndex = (squares: ('X' | 'O' | null)[]) => {
 
     if (squares[a] && squares[a] === squares[b] && squares[c] === null) {
       return c;
-      // return [squares[a], c];
     }
 
     if (squares[b] && squares[c] === squares[b] && squares[a] === null) {
       return a;
-      // return [squares[b], a];
     }
 
     if (squares[c] && squares[a] === squares[c] && squares[b] === null) {
       return b;
-      // return [squares[c], b];
+    }
+  }
+
+  return null;
+};
+
+export const lookForComputerWin = (squares: ('X' | 'O' | null)[]) => {
+  for (let i = 0; i < winningLines.length; i++) {
+    const [a, b, c] = winningLines[i];
+
+    if (squares[a] === 'O' && squares[b] === 'O' && squares[c] === null) {
+      return c;
+    }
+
+    if (squares[b] === 'O' && squares[c] === 'O' && squares[a] === null) {
+      return a;
+    }
+
+    if (squares[c] === 'O' && squares[a] === 'O' && squares[b] === null) {
+      return b;
     }
   }
 

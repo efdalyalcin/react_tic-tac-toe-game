@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
-import { calculateWinner, lookForWinningIndex } from '../helper';
+import { calculateWinner, lookForComputerWin, lookForWinningIndex } from '../helper';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
@@ -71,8 +71,12 @@ export const Board: React.FC = () => {
       if (!isXNext && !isWinner) {
         const freeIndexNums = getFreeIndexes();
         const winningPosition = lookForWinningIndex(boardSquares);
-    
-        if (winningPosition !== null) {
+        const computerWinningPos = lookForComputerWin(boardSquares);
+
+        if (computerWinningPos !== null) {
+          putComputerAt(computerWinningPos);
+          setIsXNext(true);
+        } else if (winningPosition !== null) {
           putComputerAt(winningPosition);
           setIsXNext(true);
         } else {
