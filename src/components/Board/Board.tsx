@@ -3,6 +3,7 @@ import { Squares } from '../Squares/Squares';
 import './Board.scss';
 import { calculateWinner, lookForComputerWin, lookForWinningIndex } from '../helper';
 import { ScoreBoard } from '../ScoreBoard/ScoreBoard';
+import { Toggler } from '../Toggler/Toggler';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
@@ -11,6 +12,7 @@ export const Board: React.FC = () => {
   const [isXNext, setIsXNext] = useState(true);
   const [winner, setWinner] = useState<'X' | 'O' | null>(null);
   const [isDraw, setIsDraw] = useState(false);
+  // const [isToggledToHard, setIsToggledToHard] = useState(false);
 
   const handleClick = (index: number) => {
     const squares = [...boardSquares];
@@ -28,6 +30,12 @@ export const Board: React.FC = () => {
       value={boardSquares[index]}
       onClick={() => handleClick(index)}
     />
+  );
+
+  const nextPlayerHandler = (
+    isXNext
+      ? 'Next player: X'
+      : 'Next player: O'
   );
 
   const handleReplay = () => {
@@ -93,6 +101,7 @@ export const Board: React.FC = () => {
 
   return (
     <div className="Board">
+      <Toggler />
       <ScoreBoard winner={winner} />
 
       <h2 className="Board__title">
@@ -100,9 +109,7 @@ export const Board: React.FC = () => {
           ? 'It is a draw' 
           : winner
             ? `Winner is ${winner}`
-            : isXNext
-              ? 'Next player: X'
-              : 'Next player: O'
+            : nextPlayerHandler
         }
       </h2>
 

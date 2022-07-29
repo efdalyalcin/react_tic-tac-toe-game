@@ -7,5 +7,12 @@
   font-size: 40px;
   font-weight: bold;
   background-color: $c-squareColor;
-  color: $c-textColor;
+  color: rgba(143, 135, 135, 0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.45);
+  transition: box-shadow .3s, color .3s;
+
+  &.Square--filled {
+    box-shadow: 0 -2px 0px rgba(0,0,0,0.16), 0 -2px 0px rgba(0,0,0,0.45);
+    color: rgba(143, 135, 135, 1);
+  }
 }
