@@ -12,7 +12,7 @@ export const Board: React.FC = () => {
   const [isXNext, setIsXNext] = useState(true);
   const [winner, setWinner] = useState<'X' | 'O' | null>(null);
   const [isDraw, setIsDraw] = useState(false);
-  // const [isToggledToHard, setIsToggledToHard] = useState(false);
+  const [isToggledToHard, setIsToggledToHard] = useState(false);
 
   const handleClick = (index: number) => {
     const squares = [...boardSquares];
@@ -24,6 +24,10 @@ export const Board: React.FC = () => {
     setBoardSquares(squares);
     setIsXNext(!isXNext);
   }
+
+  const handleIsChecked = () => {
+    setIsToggledToHard(!isToggledToHard);
+  };
 
   const renderSquare = (index: number) => (
     <Squares 
@@ -101,7 +105,7 @@ export const Board: React.FC = () => {
 
   return (
     <div className="Board">
-      <Toggler />
+      <Toggler isChecked={isToggledToHard} handleIsChecked={handleIsChecked}/>
       <ScoreBoard winner={winner} />
 
       <h2 className="Board__title">
