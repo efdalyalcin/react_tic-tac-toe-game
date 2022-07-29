@@ -12,6 +12,7 @@ export const Board: React.FC = () => {
   const [isXNext, setIsXNext] = useState(true);
   const [winner, setWinner] = useState<'X' | 'O' | null>(null);
   const [isDraw, setIsDraw] = useState(false);
+  const [isCompFirstPlay, setIsCompFirstPlay] = useState(true);
   const [isToggledToHard, setIsToggledToHard] = useState(false);
 
   const handleClick = (index: number) => {
@@ -47,6 +48,7 @@ export const Board: React.FC = () => {
     setIsXNext(true);
     setWinner(null);
     setIsDraw(false);
+    setIsCompFirstPlay(true);
   };
 
   useEffect(
@@ -78,6 +80,19 @@ export const Board: React.FC = () => {
           setIsDraw(true);
         }
       };
+
+      const firstComputerPlay = () => {
+        if (boardSquares[4] === null) {
+          putComputerAt(4);
+          setIsXNext(true);
+        } else {
+          const cornerIndexes = [0, 2, 6, 8];
+          const randomIndex = Math.floor(Math.random() * 4);
+
+          putComputerAt(cornerIndexes[randomIndex]);
+          setIsXNext(true);
+        }
+      };
     
       const isWinner = checkWinner();
     
@@ -86,7 +101,10 @@ export const Board: React.FC = () => {
         const winningPosition = lookForWinningIndex(boardSquares);
         const computerWinningPos = lookForComputerWin(boardSquares);
 
-        if (computerWinningPos !== null) {
+        if (isToggledToHard && isCompFirstPlay) {
+          firstComputerPlay();
+          setIsCompFirstPlay(false);
+        } else if (computerWinningPos !== null) {
           putComputerAt(computerWinningPos);
           setIsXNext(true);
         } else if (winningPosition !== null) {
@@ -100,7 +118,7 @@ export const Board: React.FC = () => {
         }
       }
     },
-    [boardSquares, isXNext, winner],
+    [boardSquares, isXNext, winner, isCompFirstPlay, isToggledToHard],
   );
 
   return (

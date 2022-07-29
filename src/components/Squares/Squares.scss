@@ -1,10 +1,11 @@
 @import "../../vars";
 
 .Square {
+  cursor: pointer;
   width: 100px;
   height: 100px;
   border: 2px solid $c-textColor;
-  font-size: 40px;
+  font-size: 48px;
   font-weight: bold;
   background-color: $c-squareColor;
   color: rgba(143, 135, 135, 0);
