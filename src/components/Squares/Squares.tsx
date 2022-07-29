@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import './Squares.scss';
 
 type Props = {
@@ -9,11 +10,18 @@ type Props = {
 export const Squares: React.FC<Props> = (
   { onClick, value}
 ) => {
+  const handleClassname = () => {
+    if (value !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <button
       type="button"
-      className="Square"
+      className={cn('Square', {'Square--filled': handleClassname()})}
       onClick={onClick}
     >
       {value}

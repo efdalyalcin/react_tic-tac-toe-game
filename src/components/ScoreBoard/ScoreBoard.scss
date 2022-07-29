@@ -1,0 +1,17 @@
+@import '../../vars';
+
+.ScoreBoard {
+  display: flex;
+  justify-content: space-around;
+  color: $c-textColor;
+  margin-top: 20px;
+
+  &__score {
+    display: flex;
+    justify-content: space-around;
+    width: 120px;
+    border-bottom: 1px solid $c-textColor;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}

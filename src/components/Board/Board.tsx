@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Squares } from '../Squares/Squares';
 import './Board.scss';
 import { calculateWinner, lookForComputerWin, lookForWinningIndex } from '../helper';
+import { ScoreBoard } from '../ScoreBoard/ScoreBoard';
+import { Toggler } from '../Toggler/Toggler';
 
 export const Board: React.FC = () => {
   const [boardSquares, setBoardSquares]
@@ -10,6 +12,8 @@ export const Board: React.FC = () => {
   const [isXNext, setIsXNext] = useState(true);
   const [winner, setWinner] = useState<'X' | 'O' | null>(null);
   const [isDraw, setIsDraw] = useState(false);
+  const [isCompFirstPlay, setIsCompFirstPlay] = useState(true);
+  const [isToggledToHard, setIsToggledToHard] = useState(false);
 
   const handleClick = (index: number) => {
     const squares = [...boardSquares];
@@ -22,6 +26,10 @@ export const Board: React.FC = () => {
     setIsXNext(!isXNext);
   }
 
+  const handleIsChecked = () => {
+    setIsToggledToHard(!isToggledToHard);
+  };
+
   const renderSquare = (index: number) => (
     <Squares 
       value={boardSquares[index]}
@@ -29,11 +37,18 @@ export const Board: React.FC = () => {
     />
   );
 
+  const nextPlayerHandler = (
+    isXNext
+      ? 'Next player: X'
+      : 'Next player: O'
+  );
+
   const handleReplay = () => {
     setBoardSquares(Array(9).fill(null));
     setIsXNext(true);
     setWinner(null);
     setIsDraw(false);
+    setIsCompFirstPlay(true);
   };
 
   useEffect(
@@ -65,6 +80,19 @@ export const Board: React.FC = () => {
           setIsDraw(true);
         }
       };
+
+      const firstComputerPlay = () => {
+        if (boardSquares[4] === null) {
+          putComputerAt(4);
+          setIsXNext(true);
+        } else {
+          const cornerIndexes = [0, 2, 6, 8];
+          const randomIndex = Math.floor(Math.random() * 4);
+
+          putComputerAt(cornerIndexes[randomIndex]);
+          setIsXNext(true);
+        }
+      };
     
       const isWinner = checkWinner();
     
@@ -73,7 +101,10 @@ export const Board: React.FC = () => {
         const winningPosition = lookForWinningIndex(boardSquares);
         const computerWinningPos = lookForComputerWin(boardSquares);
 
-        if (computerWinningPos !== null) {
+        if (isToggledToHard && isCompFirstPlay) {
+          firstComputerPlay();
+          setIsCompFirstPlay(false);
+        } else if (computerWinningPos !== null) {
           putComputerAt(computerWinningPos);
           setIsXNext(true);
         } else if (winningPosition !== null) {
@@ -87,19 +118,20 @@ export const Board: React.FC = () => {
         }
       }
     },
-    [boardSquares, isXNext, winner],
+    [boardSquares, isXNext, winner, isCompFirstPlay, isToggledToHard],
   );
 
   return (
     <div className="Board">
+      <Toggler isChecked={isToggledToHard} handleIsChecked={handleIsChecked}/>
+      <ScoreBoard winner={winner} />
+
       <h2 className="Board__title">
         {isDraw 
           ? 'It is a draw' 
           : winner
             ? `Winner is ${winner}`
-            : isXNext
-              ? 'Next player: X'
-              : 'Next player: O'
+            : nextPlayerHandler
         }
       </h2>
 
